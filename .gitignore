@@ -91,3 +91,6 @@ ENV/
 # data
 *.txt
 src/*.txt
+
+# vscode
+.vscode/settings.json

@@ -6,6 +6,7 @@ from qhue import Bridge
 from qhue import create_new_username
 import json
 import requests
+from hagateway import HAGateway
 
 CRED_FILE_PATH = "qhue_username.txt"
 BRIDGE_IP = "192.168.1.101"
@@ -37,6 +38,7 @@ def main():
             username = cred_file.read()
 
     b = Bridge(BRIDGE_IP, username)
+    haGateway = HAGateway('https://hagateway.azurewebsites.net')
 
     while running:
         startCollectingStates = datetime.datetime.now()
@@ -47,11 +49,7 @@ def main():
             print '---'
             print lights[light]()[u'name']
 
-            tempData = {'Id':int(light), 'State': lights[light]()['state']}
-            print tempData
-            headers = {'Content-Type': 'application/json'}
-            r = requests.post('https://hagateway.azurewebsites.net/api/HueLights', data = json.dumps(tempData), headers=headers)
-            r.close()
+            haGateway.sendHueLightStatuses(light,lights[light]()['state'])
             if(running == False):
                 break
 

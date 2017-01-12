@@ -6,9 +6,12 @@ from qhue import Bridge
 from qhue import create_new_username
 import json
 import requests
-from hagateway import HAGateway
+from wonderwareOnline import WonderwareOnline
+from wonderwareOnline import WonderwareOnlineCSV
 
 CRED_FILE_PATH = "qhue_username.txt"
+WWO_AUTH_HEADER = "/shared/WWOnlineAuthHeader.txt"
+
 BRIDGE_IP = "192.168.1.101"
 
 running = True
@@ -38,18 +41,29 @@ def main():
             username = cred_file.read()
 
     b = Bridge(BRIDGE_IP, username)
-    haGateway = HAGateway('https://hagateway.azurewebsites.net')
+    wonderwareOnline = WonderwareOnline('https://online.wonderware.com')
+
+    header = ''
+
+    with open(WWO_AUTH_HEADER, "r") as cred_file:
+            header = cred_file.read()
 
     while running:
         startCollectingStates = datetime.datetime.now()
         lights = b.lights
         
+        csv = WonderwareOnlineCSV()
+
         print 'Lights'
         for light in lights():
-            print '---'
-            print lights[light]()[u'name']
+            for stateItem in lights[light]()['state']:
+                if stateItem == 'xy':
+                    continue
+                csv.add_value(light +'.' + stateItem, lights[light]()['state'][stateItem])
 
-            haGateway.sendHueLightStatuses(light,lights[light]()['state'])
+            print csv.build()
+
+            wonderwareOnline.send_csv(header, csv.build())
             if(running == False):
                 break
 

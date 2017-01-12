@@ -68,7 +68,7 @@ def main():
                 break
 
         endCollectingStates = datetime.datetime.now()
-        waitTimeInMilli = (endCollectingStates - startCollectingStates).microseconds / 1000000.0
+        waitTimeInMilli = (60000000 - (endCollectingStates - startCollectingStates).microseconds) / 1000000.0
         print 'waiting '
         print waitTimeInMilli
         time.sleep(waitTimeInMilli)

@@ -1,3 +1,3 @@
 # HALightMonitor
 
-This projects is collectd the state of the hue light and send it to the Web API
+This project collects the state of Hue lights and sends it to a Web API

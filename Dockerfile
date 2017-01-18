@@ -1,6 +1,5 @@
 FROM jsurf/rpi-raspbian
 
-RUN apt-get update && apt-get upgrade -y
 RUN apt-get install python -y
 RUN apt-get install python-pip -y
 

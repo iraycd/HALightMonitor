@@ -1,8 +1,10 @@
 FROM jsurf/rpi-raspbian
 
-RUN sudo apt-get update
-RUN apt-get install python -y
-RUN apt-get install python-pip -y
+#RUN apt-get update
+#RUN apt-get install python -y
+#RUN apt-get install python-pip -y
+RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+RUN python get-pip.py
 
 RUN mkdir /HueLightMonitor
 RUN mkdir /shared

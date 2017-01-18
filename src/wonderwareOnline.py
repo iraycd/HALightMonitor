@@ -7,9 +7,15 @@ class WonderwareOnline:
         cls.address = address
 
     def send_csv(self, authHeader, csvPayload):
-        headers = {'Authorization': authHeader}
-        r = requests.post(self.address + '/apis/upload/datasource',data=csvPayload, headers = headers)
-        r.close()
+        try:
+            headers = {'Authorization': authHeader}
+            r = requests.post(self.address + '/apis/upload/datasource',data=csvPayload, headers = headers)
+            r.close()
+        except requests.exceptions.ConnectTimeout as e:
+            print "Lost connection"
+        except:
+            print "Oops, something went wrong"
+
 
 
 class WonderwareOnlineCSV:
